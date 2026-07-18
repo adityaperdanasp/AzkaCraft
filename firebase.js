@@ -38,14 +38,14 @@ function makePairingCode() {
   return code;
 }
 
-async function createGame(chapterId, questions) {
+async function createGame(chapterId, questionIndices) {
   const database = ensureFirebase();
   if (!database) return null;
   const code = makePairingCode();
   await database.ref("games/" + code).set({
     createdAt: firebase.database.ServerValue.TIMESTAMP,
     chapterId,
-    questionCount: questions.length,
+    questionIndices,
     status: "waiting",
     players: {
       host: { name: "Azka", progress: 0, score: 0 }

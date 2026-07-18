@@ -9,15 +9,17 @@ const PROGRESS_KEY = "azkacraft-progress";
 const THEME_KEY = "azkacraft-theme";
 
 const STICKER_EMOJI = {
-  "sticker-noun": "🏷️",
-  "sticker-verb": "🏃",
-  "sticker-adjective": "🌈",
-  "sticker-vocab": "🔑",
-  "sticker-reading": "🗺️",
-  "sticker-writing": "🐉",
-  "sticker-art": "🎨",
-  "sticker-punctuation": "❗"
+  "sticker-interview": "🎤",
+  "sticker-spelling": "🔤",
+  "sticker-antonym": "🔄",
+  "sticker-affixes": "🧩",
+  "sticker-contraction": "✂️",
+  "sticker-punctuation": "❗",
+  "sticker-reading": "📖",
+  "sticker-creative": "✍️"
 };
+
+const QUESTIONS_PER_SESSION = 5;
 
 let QUESTION_BANK = null;   // loaded from questions.json
 let PROGRESS = null;        // loaded/saved to localStorage
@@ -157,12 +159,17 @@ function renderStickers() {
 
 /* ---------------------------- Question ordering (no repeat type twice in a row) ---------------------------- */
 
-function buildQuestionOrder(questions) {
-  const list = [...questions];
+function shuffle(items) {
+  const list = [...items];
   for (let i = list.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [list[i], list[j]] = [list[j], list[i]];
   }
+  return list;
+}
+
+function buildQuestionOrder(questions) {
+  const list = shuffle(questions);
   for (let i = 1; i < list.length; i++) {
     if (list[i].type === list[i - 1].type) {
       const swapWith = list.findIndex((q, idx) => idx > i && q.type !== list[i - 1].type);
@@ -174,13 +181,28 @@ function buildQuestionOrder(questions) {
   return list;
 }
 
+// Picks a random subset from the chapter's larger question pool so each
+// playthrough draws a fresh 5-question set instead of the whole bank.
+function pickSessionQuestions(pool, count) {
+  return shuffle(pool).slice(0, Math.min(count, pool.length));
+}
+
 /* ---------------------------- Starting a chapter ---------------------------- */
 
 function startChapter(chapterId, mpInfo = null) {
   const chapter = QUESTION_BANK.chapters.find(c => c.id === chapterId);
+  const sessionQuestions = pickSessionQuestions(chapter.questions, QUESTIONS_PER_SESSION);
+  startChapterWithQuestions(chapterId, sessionQuestions, mpInfo);
+}
+
+// Used directly by Multiplayer so both players race the exact same 5
+// questions (picked once by the host and shared via Firebase), instead of
+// each device independently sampling its own random subset.
+function startChapterWithQuestions(chapterId, questions, mpInfo = null) {
+  const chapter = QUESTION_BANK.chapters.find(c => c.id === chapterId);
   session = {
     chapter,
-    order: buildQuestionOrder(chapter.questions),
+    order: buildQuestionOrder(questions),
     index: 0,
     score: 0,
     correctCount: 0,
@@ -546,7 +568,11 @@ function wireMultiplayerSetup() {
   document.getElementById("mp-create-game").addEventListener("click", async () => {
     const chapterId = parseInt(document.getElementById("mp-host-chapter").value, 10);
     const chapter = QUESTION_BANK.chapters.find(c => c.id === chapterId);
-    const code = await AzkaFirebase.createGame(chapterId, chapter.questions);
+    // Pick the 5 questions once on the host and share their indices via
+    // Firebase, so both players race the exact same question set.
+    const sessionQuestions = pickSessionQuestions(chapter.questions, QUESTIONS_PER_SESSION);
+    const questionIndices = sessionQuestions.map(q => chapter.questions.indexOf(q));
+    const code = await AzkaFirebase.createGame(chapterId, questionIndices);
     if (!code) {
       alert("Multiplayer needs Firebase configured — see firebase.js for setup steps.");
       return;
@@ -559,7 +585,7 @@ function wireMultiplayerSetup() {
       if (gameState && gameState.status === "playing" && gameState.players.guest) {
         unsubscribe();
         multiplayer = { role: "host", code, unsubscribe: null };
-        startChapter(chapterId, multiplayer);
+        startChapterWithQuestions(chapterId, questionIndices.map(i => chapter.questions[i]), multiplayer);
       }
     });
   });
@@ -586,7 +612,9 @@ function wireMultiplayerSetup() {
       });
     });
     multiplayer = { role: "guest", code, unsubscribe: null };
-    startChapter(snap.chapterId, multiplayer);
+    const chapter = QUESTION_BANK.chapters.find(c => c.id === snap.chapterId);
+    const sharedQuestions = snap.questionIndices.map(i => chapter.questions[i]);
+    startChapterWithQuestions(snap.chapterId, sharedQuestions, multiplayer);
   });
 
   document.getElementById("mp-scan-qr").addEventListener("click", () => {

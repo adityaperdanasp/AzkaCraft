@@ -1,7 +1,10 @@
 # AzkaCraft — Storybook Language & Arts Quest
 
-A storybook-themed quiz game built for Azka (Grade 4), covering grammar,
-vocabulary, reading comprehension, creative writing, and basic art concepts.
+A storybook-themed quiz game built for Azka (Grade 4). The 8 chapters follow
+the table of contents of *GMS Workbook: Language Arts, Upper Elementary,
+Grade 4 Term 1* (Green Montessori School): Interview Me!, Spelling,
+Antonyms, Prefixes and Suffixes, Contractions, Capitalization and
+Punctuation, Reading Comprehension, and Creative Writing.
 
 ## File structure
 
@@ -14,7 +17,7 @@ vocabulary, reading comprehension, creative writing, and basic art concepts.
 | `qrcode.js` | QR code generation (for hosting) and camera-based QR scanning (for joining). |
 | `voice.js` | ElevenLabs text-to-speech with automatic fallback to the browser's SpeechSynthesis API. Praise/encouragement phrase banks live here. |
 | `elevenlabs-config.js` | Paste your free ElevenLabs API key here (see below). |
-| `questions.json` | The question bank, organized by chapter. Placeholder content for now. |
+| `questions.json` | The question bank, organized by chapter, with a large pool per chapter — the game randomly draws 5 questions from that pool each playthrough. |
 | `manifest.json` | Web app manifest for "Add to Home Screen". |
 | `icons/` | Real generated app icons (192×192, 512×512, apple-touch-icon) + the source SVG they were rendered from. |
 
@@ -34,11 +37,11 @@ voice calls, which gracefully fall back to the on-device browser voice).
   "chapters": [
     {
       "id": 1,
-      "title": "Nouns & Naming Words",
-      "topic": "Grammar",
+      "title": "Interview Me!",
+      "topic": "Speaking & Writing",
       "snippet": "A short 1-2 sentence fun fact shown + spoken before each question.",
-      "stickerId": "sticker-noun",
-      "questions": [ /* see types below */ ]
+      "stickerId": "sticker-interview",
+      "questions": [ /* a pool of 10+ questions — see types below */ ]
     }
   ]
 }
@@ -53,10 +56,12 @@ Each question has a `"type"` field. Supported types and their shape:
 - **`sentence-builder`** — `{ type, prompt, words: [...], answer }` (words are shuffled and shown as tappable chips)
 
 To add real content: open `questions.json`, find the chapter by `id`, and
-replace/expand its `questions` array. Chapters run in `id` order and unlock
-sequentially as each is completed. The game automatically mixes question
-types so the same type never repeats twice in a row — you don't need to
-order them yourself.
+add to its `questions` array — the more questions in a chapter's pool, the
+more variety Azka sees across replays. Chapters run in `id` order and
+unlock sequentially as each is completed. Each playthrough, `script.js`
+(`pickSessionQuestions`) randomly draws `QUESTIONS_PER_SESSION` (5) questions
+from that chapter's full pool, then mixes their types so the same type never
+repeats twice in a row.
 
 ## Adding your free ElevenLabs API key
 
@@ -76,8 +81,10 @@ order them yourself.
 2. The other player picks **Multiplayer Quest → Join a Game** and either
    types the 6-character code or taps **Scan QR Instead** to use their
    camera (via `qrcode.js` + the `jsQR` library).
-3. Once the guest joins, both devices start the same chapter's questions.
-   Each answer updates that player's progress in Firebase
+3. The host picks the session's 5 questions once and shares their indices
+   through Firebase (`games/<code>/questionIndices`), so both devices race
+   the exact same 5 questions in the same order — not two different random
+   draws. Each answer updates that player's progress in Firebase
    (`games/<code>/players/<role>`), so you could extend the UI to show a
    live opponent progress bar by reading that same path.
 4. **Multiplayer requires a Firebase project** — see the setup comment at
@@ -115,8 +122,11 @@ open the deployed URL in Safari (iOS) or Chrome (Android), then use
 **Share → Add to Home Screen** (iOS) or the **Install app** menu prompt
 (Android/Chrome).
 
-## Next step
+## Source material
 
-Real chapter content (generated from a source PDF, not copy-pasted, with a
-larger shuffleable pool per chapter) will be added to `questions.json` in a
-follow-up pass — the schema above is what to target.
+The question bank in `questions.json` is adapted from *GMS Workbook:
+Language Arts, Upper Elementary, Grade 4 Term 1* (Green Montessori School) —
+not copy-pasted verbatim, but rewritten into quiz questions that test the
+same facts, word lists, and reading passages (Jane Goodall, The Curse of
+Cogston House, Aesop's fables, The Ocean, The Bicycle, and more). Each
+chapter's pool has 12-23 questions so replays feel fresh.
