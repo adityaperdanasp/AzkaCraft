@@ -1,0 +1,125 @@
+{
+  "_comment": "AzkaCraft placeholder question bank. Organized by chapter (level). Replace/expand each chapter's 'questions' array with real content later — see README.md for the schema of each question type.",
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Nouns & Naming Words",
+      "topic": "Grammar",
+      "snippet": "Did you know a noun can be a person, place, thing, or even an idea? 'Happiness' is a noun too!",
+      "stickerId": "sticker-noun",
+      "questions": [
+        { "type": "mc", "prompt": "Which word is a noun?", "options": ["Run", "Blue", "Dog", "Quickly"], "answer": "Dog" },
+        { "type": "fill", "prompt": "Fill in the blank: The ___ barked loudly at the mailman.", "answer": "dog" },
+        { "type": "match", "prompt": "Match each noun to its category.", "pairs": [ { "left": "Teacher", "right": "Person" }, { "left": "Park", "right": "Place" }, { "left": "Bicycle", "right": "Thing" } ] },
+        { "type": "flashcard", "word": "Noun", "definition": "A word that names a person, place, thing, or idea.", "example": "The 'library' (place) is full of 'books' (things)." },
+        { "type": "sentence-builder", "prompt": "Put the words in order to make a sentence.", "words": ["The", "cat", "sat", "on", "the", "mat"], "answer": "The cat sat on the mat" },
+        { "type": "mc", "prompt": "Which sentence uses a proper noun correctly?", "options": ["i live in jakarta", "I live in Jakarta", "I live in jakarta", "i Live in Jakarta"], "answer": "I live in Jakarta" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Action Words: Verbs",
+      "topic": "Grammar",
+      "snippet": "Verbs are the 'doing' words in a sentence — they show action or being, like jump, sing, or think!",
+      "stickerId": "sticker-verb",
+      "questions": [
+        { "type": "mc", "prompt": "Which word is a verb?", "options": ["Table", "Jump", "Green", "Slowly"], "answer": "Jump" },
+        { "type": "fill", "prompt": "Fill in the blank: Azka ___ his homework every evening.", "answer": "finishes" },
+        { "type": "match", "prompt": "Match the verb to what it describes.", "pairs": [ { "left": "Swim", "right": "Move in water" }, { "left": "Write", "right": "Put words on paper" }, { "left": "Sleep", "right": "Rest at night" } ] },
+        { "type": "flashcard", "word": "Verb", "definition": "A word that shows action or a state of being.", "example": "She 'sings' beautifully every morning." },
+        { "type": "sentence-builder", "prompt": "Put the words in order to make a sentence.", "words": ["Birds", "fly", "high", "in", "the", "sky"], "answer": "Birds fly high in the sky" },
+        { "type": "mc", "prompt": "Which sentence has a verb in the past tense?", "options": ["I walk to school", "I will walk to school", "I walked to school", "I am walking"], "answer": "I walked to school" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Describing with Adjectives",
+      "topic": "Grammar",
+      "snippet": "Adjectives paint pictures with words! They describe how something looks, feels, or seems.",
+      "stickerId": "sticker-adjective",
+      "questions": [
+        { "type": "mc", "prompt": "Which word is an adjective?", "options": ["Run", "Sparkly", "Book", "Quickly"], "answer": "Sparkly" },
+        { "type": "fill", "prompt": "Fill in the blank: The ___ dragon breathed fire.", "answer": "fierce" },
+        { "type": "match", "prompt": "Match each adjective to the noun it best describes.", "pairs": [ { "left": "Fluffy", "right": "Cloud" }, { "left": "Crunchy", "right": "Chips" }, { "left": "Tall", "right": "Giraffe" } ] },
+        { "type": "flashcard", "word": "Adjective", "definition": "A word that describes a noun.", "example": "The 'enormous' elephant walked slowly." },
+        { "type": "sentence-builder", "prompt": "Put the words in order to make a sentence.", "words": ["The", "tiny", "kitten", "is", "sleepy"], "answer": "The tiny kitten is sleepy" },
+        { "type": "mc", "prompt": "Which word describes a size?", "options": ["Huge", "Happy", "Loud", "Yesterday"], "answer": "Huge" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Vocabulary Adventure",
+      "topic": "Vocabulary",
+      "snippet": "New words are like keys — each one opens a door to a new idea!",
+      "stickerId": "sticker-vocab",
+      "questions": [
+        { "type": "flashcard", "word": "Enormous", "definition": "Very, very big.", "example": "The whale was enormous compared to the boat." },
+        { "type": "mc", "prompt": "What does 'brave' mean?", "options": ["Scared", "Courageous", "Tired", "Silly"], "answer": "Courageous" },
+        { "type": "match", "prompt": "Match each word to its synonym.", "pairs": [ { "left": "Happy", "right": "Joyful" }, { "left": "Fast", "right": "Quick" }, { "left": "Small", "right": "Tiny" } ] },
+        { "type": "fill", "prompt": "Fill in the blank: The opposite of 'ancient' is ___.", "answer": "modern" },
+        { "type": "sentence-builder", "prompt": "Put the words in order to make a sentence.", "words": ["Her", "curious", "mind", "loved", "puzzles"], "answer": "Her curious mind loved puzzles" },
+        { "type": "mc", "prompt": "Which word means the same as 'gigantic'?", "options": ["Huge", "Tiny", "Narrow", "Quiet"], "answer": "Huge" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Reading Comprehension: The Lost Map",
+      "topic": "Reading Comprehension",
+      "snippet": "Once upon a time, a young explorer found an old map hidden inside a library book. Let's read her story!",
+      "stickerId": "sticker-reading",
+      "questions": [
+        { "type": "mc", "prompt": "Story: Lina found a map inside an old book. She followed it to a hidden garden behind her school. What did Lina find the map inside of?", "options": ["A box", "An old book", "A drawer", "A backpack"], "answer": "An old book" },
+        { "type": "mc", "prompt": "Where did the map lead Lina?", "options": ["A cave", "A hidden garden", "The beach", "A castle"], "answer": "A hidden garden" },
+        { "type": "fill", "prompt": "Fill in the blank: Lina followed the map to a hidden ___.", "answer": "garden" },
+        { "type": "match", "prompt": "Match the character to their role in the story.", "pairs": [ { "left": "Lina", "right": "Explorer" }, { "left": "The map", "right": "Clue" }, { "left": "The garden", "right": "Hidden place" } ] },
+        { "type": "flashcard", "word": "Comprehension", "definition": "Understanding what you read or hear.", "example": "Good comprehension helps you answer questions about a story." },
+        { "type": "sentence-builder", "prompt": "Put the words in order to retell part of the story.", "words": ["Lina", "found", "an", "old", "map"], "answer": "Lina found an old map" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Creative Writing Sparks",
+      "topic": "Creative Writing",
+      "snippet": "Every great story starts with a spark of imagination — what if a cat could talk?",
+      "stickerId": "sticker-writing",
+      "questions": [
+        { "type": "flashcard", "word": "Imagination", "definition": "The ability to create ideas or pictures in your mind.", "example": "She used her imagination to write a story about flying cats." },
+        { "type": "mc", "prompt": "Which sentence is the best story opening?", "options": ["The dog is brown.", "Once, a tiny dragon hid inside a teapot.", "This is a sentence.", "The weather is nice."], "answer": "Once, a tiny dragon hid inside a teapot." },
+        { "type": "fill", "prompt": "Fill in the blank to start a story: One rainy night, a mysterious ___ appeared at the door.", "answer": "stranger" },
+        { "type": "match", "prompt": "Match the story part to its purpose.", "pairs": [ { "left": "Beginning", "right": "Introduces characters" }, { "left": "Middle", "right": "Shows the problem" }, { "left": "End", "right": "Solves the problem" } ] },
+        { "type": "sentence-builder", "prompt": "Put the words in order to make a story sentence.", "words": ["A", "brave", "knight", "found", "a", "secret", "door"], "answer": "A brave knight found a secret door" },
+        { "type": "mc", "prompt": "What is a 'character' in a story?", "options": ["The setting", "A person or animal in the story", "The title", "The ending"], "answer": "A person or animal in the story" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Colors & Art Basics",
+      "topic": "Art",
+      "snippet": "Mixing blue and yellow makes green! Artists use color combos to create every shade imaginable.",
+      "stickerId": "sticker-art",
+      "questions": [
+        { "type": "craft-match", "prompt": "Match each art tool to its correct use.", "pairs": [ { "left": "Paintbrush", "right": "Applies paint" }, { "left": "Palette", "right": "Holds mixed colors" }, { "left": "Eraser", "right": "Removes pencil marks" } ] },
+        { "type": "mc", "prompt": "What color do you get when you mix blue and yellow?", "options": ["Purple", "Green", "Orange", "Pink"], "answer": "Green" },
+        { "type": "fill", "prompt": "Fill in the blank: Red, blue, and yellow are called ___ colors.", "answer": "primary" },
+        { "type": "flashcard", "word": "Primary Colors", "definition": "The three colors (red, blue, yellow) used to mix all other colors.", "example": "Mixing the primary colors red and blue makes purple." },
+        { "type": "craft-match", "prompt": "Match the technique to its description.", "pairs": [ { "left": "Watercolor", "right": "Uses water-based paint" }, { "left": "Sketching", "right": "Drawing with pencil" }, { "left": "Collage", "right": "Gluing pieces together" } ] },
+        { "type": "mc", "prompt": "Which color is considered 'warm'?", "options": ["Blue", "Orange", "Purple", "Teal"], "answer": "Orange" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Punctuation Power",
+      "topic": "Grammar",
+      "snippet": "A tiny period can change everything — 'Let's eat, Grandma!' is very different from 'Let's eat Grandma!'",
+      "stickerId": "sticker-punctuation",
+      "questions": [
+        { "type": "mc", "prompt": "Which punctuation mark ends a question?", "options": [".", "!", "?", ","], "answer": "?" },
+        { "type": "fill", "prompt": "Fill in the blank with the correct punctuation: What is your name___", "answer": "?" },
+        { "type": "match", "prompt": "Match the punctuation mark to its use.", "pairs": [ { "left": "Period", "right": "Ends a statement" }, { "left": "Exclamation mark", "right": "Shows excitement" }, { "left": "Comma", "right": "Separates items in a list" } ] },
+        { "type": "flashcard", "word": "Comma", "definition": "A punctuation mark used to separate items or ideas in a sentence.", "example": "I bought apples, bananas, and grapes." },
+        { "type": "sentence-builder", "prompt": "Put the words (and punctuation) in order.", "words": ["Wow", "that", "is", "amazing"], "answer": "Wow that is amazing" },
+        { "type": "mc", "prompt": "Which sentence uses punctuation correctly?", "options": ["I love pizza", "I love pizza.", "i love pizza.", "I Love pizza"], "answer": "I love pizza." }
+      ]
+    }
+  ]
+}
