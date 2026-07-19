@@ -223,30 +223,23 @@ function renderProgressBar() {
   document.getElementById("game-score").textContent = session.score;
 }
 
-/* ---------------------------- Encouragement toast ---------------------------- */
-
-function showToast(kind, text) {
-  const toast = document.getElementById("encourage-toast");
-  toast.textContent = text;
-  toast.className = "encourage-toast " + kind;
-  toast.classList.remove("hidden");
-}
-function hideToast() {
-  document.getElementById("encourage-toast").classList.add("hidden");
-}
-
 /* ---------------------------- Story snippet ---------------------------- */
 
+// Shown as text only before the chapter's first question — never spoken
+// aloud, and not repeated before questions 2-5.
 function showStorySnippet() {
   const el = document.getElementById("story-snippet");
-  el.textContent = session.chapter.snippet;
-  AzkaVoice.speakStory(session.chapter.snippet);
+  if (session.index === 0) {
+    el.textContent = session.chapter.snippet;
+    el.classList.remove("hidden");
+  } else {
+    el.classList.add("hidden");
+  }
 }
 
 /* ---------------------------- Rendering questions ---------------------------- */
 
 function renderCurrentQuestion() {
-  hideToast();
   renderProgressBar();
 
   if (session.index >= session.order.length) {
@@ -254,7 +247,6 @@ function renderCurrentQuestion() {
     return;
   }
 
-  // Show the story snippet before every question (per spec).
   showStorySnippet();
 
   const q = session.order[session.index];
@@ -304,7 +296,6 @@ function handleMCAnswer(selected, q, grid) {
   if (isCorrect) {
     buttons.find(b => b.textContent === selected).classList.add("selected-correct");
     const phrase = AzkaVoice.speakPraise();
-    showToast("correct", "🎉 " + phrase);
     session.score += 10;
     session.correctCount++;
     nextQuestion(1500);
@@ -312,7 +303,6 @@ function handleMCAnswer(selected, q, grid) {
     buttons.find(b => b.textContent === selected).classList.add("selected-wrong");
     buttons.find(b => b.textContent === q.answer).classList.add("reveal-correct");
     const phrase = AzkaVoice.speakEncouragement(q.answer);
-    showToast("wrong", "💡 " + phrase);
     session.score += 3;
     nextQuestion(5000);
   }
@@ -347,7 +337,6 @@ function handleFillAnswer(q) {
   if (isCorrect) {
     input.classList.add("correct");
     const phrase = AzkaVoice.speakPraise();
-    showToast("correct", "🎉 " + phrase);
     session.score += 10;
     session.correctCount++;
     nextQuestion(1500);
@@ -356,7 +345,6 @@ function handleFillAnswer(q) {
     document.getElementById("fill-correction").innerHTML =
       `<div class="fill-correction">Correct answer: <strong>${q.answer}</strong></div>`;
     const phrase = AzkaVoice.speakEncouragement(q.answer);
-    showToast("wrong", "💡 " + phrase);
     session.score += 3;
     nextQuestion(5000);
   }
@@ -414,14 +402,12 @@ function handleMatchAnswer(q, grid) {
 
   if (allCorrect) {
     const phrase = AzkaVoice.speakPraise();
-    showToast("correct", "🎉 " + phrase);
     session.score += 10;
     session.correctCount++;
     nextQuestion(1500);
   } else {
     const firstWrong = q.pairs.find((p, i) => selects[i].value !== p.right);
     const phrase = AzkaVoice.speakEncouragement(`${firstWrong.left} → ${firstWrong.right}`);
-    showToast("wrong", "💡 " + phrase);
     session.score += 3;
     nextQuestion(7000);
   }
@@ -439,7 +425,6 @@ function renderFlashcard(q, area) {
   `;
   document.getElementById("flash-got-it").addEventListener("click", () => {
     const phrase = AzkaVoice.speakPraise();
-    showToast("correct", "✨ " + phrase);
     session.score += 5;
     session.correctCount++;
     nextQuestion(1500);
@@ -486,18 +471,15 @@ function handleSentenceAnswer(q, target) {
 
   if (isCorrect) {
     const phrase = AzkaVoice.speakPraise();
-    showToast("correct", "🎉 " + phrase);
     session.score += 10;
     session.correctCount++;
     nextQuestion(1500);
   } else {
     const correction = document.createElement("div");
     correction.className = "fill-correction";
-    correction.style.marginTop = "10px";
     correction.innerHTML = `Correct sentence: <strong>${q.answer}</strong>`;
     target.after(correction);
     const phrase = AzkaVoice.speakEncouragement(q.answer);
-    showToast("wrong", "💡 " + phrase);
     session.score += 3;
     nextQuestion(5000);
   }
