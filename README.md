@@ -1,4 +1,4 @@
-# AzkaCraft — Storybook Language & Arts Quest
+# AzkaSocial — Storybook Language & Arts Quest
 
 A storybook-themed quiz game built for Azka (Grade 4). The 8 chapters follow
 the table of contents of *GMS Workbook: Language Arts, Upper Elementary,

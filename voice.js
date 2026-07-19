@@ -1,4 +1,4 @@
-// AzkaCraft — voice encouragement
+// AzkaSocial — voice encouragement
 // Primary: ElevenLabs API (warm natural female voice). Falls back automatically
 // to the browser SpeechSynthesis API if ElevenLabs is unavailable, errors, or
 // the free-tier quota is exhausted.

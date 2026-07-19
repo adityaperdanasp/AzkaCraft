@@ -1,4 +1,4 @@
-// AzkaCraft — Firebase config and Multiplayer sync logic.
+// AzkaSocial — Firebase config and Multiplayer sync logic.
 // This file is ONLY loaded/used when the player picks Multiplayer mode.
 // Solo mode never touches this file or the network — see script.js.
 //

@@ -1,4 +1,4 @@
-// AzkaCraft — ElevenLabs voice configuration
+// AzkaSocial — ElevenLabs voice configuration
 //
 // HOW TO ADD YOUR FREE API KEY:
 //   1. Go to https://elevenlabs.io and sign up for a free account.

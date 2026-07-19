@@ -1,5 +1,5 @@
 /* =========================================================
-   AzkaCraft — script.js
+   AzkaSocial — script.js
    Core game logic: chapter progression, question rendering,
    localStorage saves, theme toggle, Brain Rest timer, and the
    answer-correction display + timing logic per question type.

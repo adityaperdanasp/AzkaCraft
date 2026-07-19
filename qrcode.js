@@ -1,4 +1,4 @@
-// AzkaCraft — QR code generation and scanning for Multiplayer pairing.
+// AzkaSocial — QR code generation and scanning for Multiplayer pairing.
 // Generation uses the qrcodejs CDN library (loaded in index.html).
 // Scanning uses the device camera via getUserMedia + the jsQR CDN library
 // (also loaded in index.html) so a friend can join by pointing their phone
