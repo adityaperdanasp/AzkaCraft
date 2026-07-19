@@ -1,73 +1,37 @@
 // AzkaSocial — voice encouragement
-// Primary: ElevenLabs API (warm natural female voice). Falls back automatically
-// to the browser SpeechSynthesis API if ElevenLabs is unavailable, errors, or
-// the free-tier quota is exhausted.
+// Plays pre-recorded ElevenLabs MP3 clips from /audio (see
+// scripts/generate-voice-lines.sh) — the app never calls the ElevenLabs
+// API at runtime, so playing a line never costs credits. Falls back to
+// the browser's SpeechSynthesis API only if a clip fails to load or play
+// (e.g. missing file, autoplay blocked).
 
+const PRAISE_CLIP_COUNT = 20;
+const ENCOURAGE_CLIP_COUNT = 20;
+
+// Used only for the browser-voice fallback text — the real audio is the
+// pre-recorded MP3 clips above.
 const PRAISE_PHRASES = [
   "Amazing job, Azka! You got it!",
   "Wow Azka, that's exactly right!",
   "Azka, you're a superstar today!",
   "Yes! Azka nailed it!",
-  "Fantastic work, Azka!",
-  "Azka, your brain is on fire — great job!",
-  "Perfect, Azka! Keep it up!",
-  "You're on a roll, Azka!",
-  "Brilliant, Azka! That's correct!",
-  "Way to go, Azka! You're learning so fast!",
-  "Azka, that was awesome!",
-  "Incredible, Azka! You really know this!"
+  "Fantastic work, Azka!"
 ];
 
 const ENCOURAGE_PHRASES = [
-  (correct) => `Nice try, Azka! The right answer was ${correct}. You'll get it next time!`,
-  (correct) => `Almost there, Azka! It's actually ${correct} — great effort!`,
-  (correct) => `Good try, Azka! Remember, the answer is ${correct}. You're learning!`,
-  (correct) => `That's okay, Azka! The correct answer is ${correct}. Keep going, you're doing great!`,
-  (correct) => `Close one, Azka! It was ${correct} this time — you'll shine on the next one!`,
-  (correct) => `No worries, Azka! The answer is ${correct}. Mistakes help us learn!`,
-  (correct) => `Azka, don't worry! It's ${correct} — you're getting stronger every day!`,
-  (correct) => `Almost, Azka! The answer was ${correct}. Try the next one with me!`,
-  (correct) => `Azka, that's a tricky one! The answer is ${correct}. You're doing wonderfully!`,
-  (correct) => `Keep your chin up, Azka! It's ${correct} — I believe in you!`,
-  (correct) => `Good thinking, Azka! The correct one is ${correct}. Onward!`,
-  (correct) => `Azka, learning means trying! The answer is ${correct}. Let's keep exploring!`
+  "Nice try, Azka! Mistakes help us learn, let's keep going!",
+  "That's okay, Azka! You'll get the next one!",
+  "Good effort, Azka! Learning takes practice!",
+  "No worries, Azka! Every try makes you smarter!",
+  "Keep your chin up, Azka! You're learning fast!"
 ];
 
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-async function speakWithElevenLabs(text) {
-  const cfg = window.ELEVENLABS_CONFIG;
-  if (!cfg || !cfg.apiKey) return false;
-
-  try {
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${cfg.voiceId}`, {
-      method: "POST",
-      headers: {
-        "xi-api-key": cfg.apiKey,
-        "Content-Type": "application/json",
-        "Accept": "audio/mpeg"
-      },
-      body: JSON.stringify({
-        text,
-        model_id: cfg.modelId,
-        voice_settings: { stability: 0.5, similarity_boost: 0.75 }
-      })
-    });
-
-    if (!response.ok) return false;
-
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const audio = new Audio(url);
-    await audio.play();
-    audio.onended = () => URL.revokeObjectURL(url);
-    return true;
-  } catch (err) {
-    console.warn("ElevenLabs voice failed, falling back to browser voice:", err);
-    return false;
-  }
+function randomClipNumber(count) {
+  return String(Math.floor(Math.random() * count) + 1).padStart(2, "0");
 }
 
 function speakWithBrowser(text) {
@@ -88,25 +52,22 @@ function speakWithBrowser(text) {
   window.speechSynthesis.speak(utter);
 }
 
-async function speak(text) {
-  const usedElevenLabs = await speakWithElevenLabs(text);
-  if (!usedElevenLabs) speakWithBrowser(text);
+function playClip(url, fallbackText) {
+  const audio = new Audio(url);
+  audio.play().catch(err => {
+    console.warn("Pre-recorded clip failed, falling back to browser voice:", err);
+    speakWithBrowser(fallbackText);
+  });
 }
 
 function speakPraise() {
-  const phrase = pickRandom(PRAISE_PHRASES);
-  speak(phrase);
-  return phrase;
+  const n = randomClipNumber(PRAISE_CLIP_COUNT);
+  playClip(`audio/praise/praise-${n}.mp3`, pickRandom(PRAISE_PHRASES));
 }
 
-function speakEncouragement(correctAnswer) {
-  const phrase = pickRandom(ENCOURAGE_PHRASES)(correctAnswer);
-  speak(phrase);
-  return phrase;
+function speakEncouragement() {
+  const n = randomClipNumber(ENCOURAGE_CLIP_COUNT);
+  playClip(`audio/encourage/encourage-${n}.mp3`, pickRandom(ENCOURAGE_PHRASES));
 }
 
-function speakStory(text) {
-  speak(text);
-}
-
-window.AzkaVoice = { speak, speakPraise, speakEncouragement, speakStory };
+window.AzkaVoice = { speakPraise, speakEncouragement };

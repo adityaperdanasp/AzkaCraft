@@ -15,8 +15,9 @@ Punctuation, Reading Comprehension, and Creative Writing.
 | `script.js` | Core game logic: theme toggle, chapter progression, localStorage saves, question rendering + rotation, answer correction timing, Brain Rest timer. |
 | `firebase.js` | Firebase config + Multiplayer sync (pairing codes, realtime progress). Only loaded/used in Multiplayer mode — Solo mode never touches it. |
 | `qrcode.js` | QR code generation (for hosting) and camera-based QR scanning (for joining). |
-| `voice.js` | ElevenLabs text-to-speech with automatic fallback to the browser's SpeechSynthesis API. Praise/encouragement phrase banks live here. |
-| `elevenlabs-config.js` | Paste your free ElevenLabs API key here (see below). |
+| `voice.js` | Plays the pre-recorded MP3 clips in `audio/` for praise/encouragement, with an automatic fallback to the browser's SpeechSynthesis API if a clip fails to load. Never calls the ElevenLabs API at runtime. |
+| `audio/praise/`, `audio/encourage/` | 20 pre-recorded ElevenLabs MP3 clips each — one is picked at random on every correct/wrong answer. Generated once via `scripts/generate-voice-lines.sh`, so playing them costs zero ElevenLabs credits. |
+| `scripts/generate-voice-lines.sh` | One-time (or re-run when you want new lines) script that calls the ElevenLabs API to (re)generate the clips in `audio/`. Not used by the live app, and intentionally **not committed to git** since it holds your API key — it stays on your machine only. |
 | `questions.json` | The question bank, organized by chapter, with a large pool per chapter — the game randomly draws 5 questions from that pool each playthrough. |
 | `manifest.json` | Web app manifest for "Add to Home Screen". |
 | `icons/` | Real generated app icons (192×192, 512×512, apple-touch-icon) + the source SVG they were rendered from. |
@@ -27,8 +28,8 @@ Solo Mode never calls `firebase.js`, never needs a network connection to a
 pairing partner, and never blocks on anything but a local `fetch` of
 `questions.json`. All progress (unlocked chapters, stars, XP, stickers) is
 saved to `localStorage` under the key `azkacraft-progress`. You can play
-Solo entirely offline after the first load (aside from optional ElevenLabs
-voice calls, which gracefully fall back to the on-device browser voice).
+Solo entirely offline after the first load — even the voice lines are
+local MP3 files, not live API calls.
 
 ## Question bank structure (`questions.json`)
 
@@ -63,15 +64,28 @@ unlock sequentially as each is completed. Each playthrough, `script.js`
 from that chapter's full pool, then mixes their types so the same type never
 repeats twice in a row.
 
-## Adding your free ElevenLabs API key
+## Voice lines (praise / encouragement)
 
-1. Sign up free at [elevenlabs.io](https://elevenlabs.io).
-2. Profile menu → **API Keys** → copy your key.
-3. Open `elevenlabs-config.js` and paste it into `apiKey: ""`.
-4. Save. That's it — `voice.js` automatically uses ElevenLabs when a key is
-   present, and silently falls back to the browser's built-in voice if the
-   key is missing, a request fails, or the free-tier quota runs out. No
-   other file needs to change.
+The 40 voice clips in `audio/praise/` and `audio/encourage/` are
+pre-recorded once with ElevenLabs and shipped as static MP3 files —
+`voice.js` just plays a random one on each answer, so **the live app
+never calls the ElevenLabs API and never spends credits during play**.
+
+To regenerate them (e.g. to switch voices or update the phrase list):
+
+1. Open `scripts/generate-voice-lines.sh` and edit the `PRAISE` / `ENCOURAGE`
+   arrays and/or `VOICE_ID` at the top.
+2. Make sure `API_KEY` in that script is a valid ElevenLabs key (free tier
+   works, but can only use ElevenLabs' premade voices via the API — custom
+   picks from the Voice Library need a paid plan).
+3. Run `bash scripts/generate-voice-lines.sh` — it overwrites the MP3s in
+   `audio/praise/` and `audio/encourage/`.
+4. Commit and deploy as usual. This is the only time the ElevenLabs API is
+   ever called.
+
+If a clip somehow fails to load in the browser, `voice.js` automatically
+falls back to the browser's built-in SpeechSynthesis voice — the game
+never breaks or goes silent.
 
 ## Multiplayer / QR join
 
