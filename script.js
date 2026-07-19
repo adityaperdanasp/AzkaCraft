@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   QUESTION_BANK = await fetch("questions.json").then(r => r.json());
   PROGRESS = loadProgress();
+  renderMultiplayerChapterOptions();
 
   // If we arrived via a scanned QR join link (?join=CODE), jump to the join panel.
   const params = new URLSearchParams(location.search);
@@ -134,7 +135,10 @@ function renderBookshelf() {
     shelf.appendChild(card);
   });
 
-  // populate multiplayer host chapter selector too
+  renderMultiplayerChapterOptions();
+}
+
+function renderMultiplayerChapterOptions() {
   const hostSelect = document.getElementById("mp-host-chapter");
   hostSelect.innerHTML = QUESTION_BANK.chapters
     .filter(c => c.id <= PROGRESS.unlockedChapter)

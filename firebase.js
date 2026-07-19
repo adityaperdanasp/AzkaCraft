@@ -11,12 +11,13 @@
 //        { "rules": { "games": { "$code": { ".read": true, ".write": true } } } }
 
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://PASTE_YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "PASTE_YOUR_PROJECT",
-  storageBucket: "PASTE_YOUR_PROJECT.firebasestorage.app",
-  appId: "PASTE_YOUR_APP_ID"
+  apiKey: "AIzaSyBF8D6KwU0waW3u-A6xZKLZd8bw0y957Wk",
+  authDomain: "azkacraft-a2a0c.firebaseapp.com",
+  databaseURL: "https://azkacraft-a2a0c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "azkacraft-a2a0c",
+  storageBucket: "azkacraft-a2a0c.firebasestorage.app",
+  messagingSenderId: "71476702964",
+  appId: "1:71476702964:web:980eff087b48dd9d7ab8a1"
 };
 
 let db = null;
