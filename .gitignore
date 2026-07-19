@@ -2,3 +2,4 @@
 node_modules/
 .vercel
 scripts/generate-voice-lines.sh
+audio-backup-original/
