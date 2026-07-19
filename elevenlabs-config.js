@@ -14,10 +14,12 @@
 
 window.ELEVENLABS_CONFIG = {
   // Paste your ElevenLabs API key here, e.g. "sk_abcdef1234567890"
-  apiKey: "",
+  apiKey: "sk_7248faa782c9158512b54fef4581bfbc3412760575be7e8f",
 
-  // A warm, friendly female voice. "Bella" (EXAVITQu4vr4xnSDxMaL) is a good
-  // free-tier default; browse https://elevenlabs.io/app/voice-library for others.
+  // "Bella" — a warm, friendly female voice from ElevenLabs' free premade
+  // set. Free-tier API keys can only use premade voices, not custom picks
+  // from the Voice Library (those require a paid plan) — verified against
+  // the live API before shipping this.
   voiceId: "EXAVITQu4vr4xnSDxMaL",
 
   // Multilingual model works well for English + Indonesian mixes.
