@@ -14,7 +14,7 @@
 # Smaller number = deeper voice. 0.944 ≈ -1 semitone, 0.841 ≈ -3 semitones.
 
 set -e
-SHIFT="0.891"
+SHIFT="0.944"
 TEMPO=$(python3 -c "print(1/${SHIFT})")
 DIR="$(dirname "$0")/../audio"
 

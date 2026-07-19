@@ -1,10 +1,10 @@
 # AzkaSocial — Storybook Language & Arts Quest
 
-A storybook-themed quiz game built for Azka (Grade 4). The 8 chapters follow
+A storybook-themed quiz game built for Azka (Grade 4). The 7 chapters follow
 the table of contents of *GMS Workbook: Language Arts, Upper Elementary,
-Grade 4 Term 1* (Green Montessori School): Interview Me!, Spelling,
-Antonyms, Prefixes and Suffixes, Contractions, Capitalization and
-Punctuation, Reading Comprehension, and Creative Writing.
+Grade 4 Term 1* (Green Montessori School): Spelling, Antonyms, Prefixes and
+Suffixes, Contractions, Capitalization and Punctuation, Reading
+Comprehension, and Creative Writing.
 
 ## File structure
 
@@ -38,10 +38,10 @@ local MP3 files, not live API calls.
   "chapters": [
     {
       "id": 1,
-      "title": "Interview Me!",
-      "topic": "Speaking & Writing",
+      "title": "Correct the Spelling Mistake",
+      "topic": "Spelling",
       "snippet": "A short 1-2 sentence fun fact shown + spoken before each question.",
-      "stickerId": "sticker-interview",
+      "stickerId": "sticker-spelling",
       "questions": [ /* a pool of 10+ questions — see types below */ ]
     }
   ]
